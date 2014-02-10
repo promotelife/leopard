@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<!-- ========================== 自定义输出格式说明================================ -->  
+    <!-- %p 输出优先级，即 TRACE，DEBUG，INFO，WARN，ERROR，FATAL -->  
+    <!-- %r 输出自应用启动到输出该log信息耗费的毫秒数  -->  
+    <!-- %c 输出所属的类目，通常就是所在类的全名 -->  
+    <!-- %t 输出产生该日志事件的线程名 -->  
+    <!-- %n 输出一个回车换行符，Windows平台为“\r\n”，Unix平台为“\n” -->  
+    <!-- %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d{yyy MMM dd HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921  -->  
+    <!-- %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数。举例：Testlog4.main(TestLog4.java:10)  -->  
+    <!-- ========================================================================== -->  
+      
+    <!-- ========================== 输出方式说明================================ -->  
+    <!-- Log4j提供的appender有以下几种:  -->  
+    <!-- org.apache.log4j.ConsoleAppender(控制台),  -->  
+    <!-- org.apache.log4j.FileAppender(文件),  -->  
+    <!-- org.apache.log4j.DailyRollingFileAppender(每天产生一个日志文件), -->  
+    <!-- org.apache.log4j.RollingFileAppender(文件大小到达指定尺寸的时候产生一个新的文件),  -->  
+    <!-- org.apache.log4j.WriterAppender(将日志信息以流格式发送到任意指定的地方)   -->  
+	<!-- ========================================================================== -->  
+
+	<!-- 输出到 Console -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="trace" />
+		<param name="Follow" value="true" />
+		<param name="Target" value="System.out"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{MMdd HH:mm:ss,SSS} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 输出到日志文本 -->
+	<appender name="LOGFILE" class="org.apache.log4j.FileAppender">
+		<param name="Append" value="true" />
+		<param name="File" value="log/server.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MMdd HH:mm:ss,SSS\} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 输出到日志文本，同时可供循环日志 -->
+	<appender name="ROLLING" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="debug" />
+		<param name="File" value="log/server.log" />
+		<param name="MaxBackupIndex" value="50"/>
+		<param name="MaxFileSize" value="102400KB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"	value="%d{MMdd HH:mm:ss,SSS\} %c %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 输出到 syslog -->
+	<appender name="SYSLOG" class="org.apache.log4j.net.SyslogAppender">
+		<param name="SyslogHost" value="172.18.28.250"/>
+		<param name="Facility" value="LOCAL0"/>
+		<param name="Threshold" value="DEBUG"/>
+		<param name="facilityPrinting" value="false"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MMdd HH:mm:ss,SSS\} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 输出到 Streaming -->
+	<appender name="STREAM" class="org.apache.log4j.WriterAppender">
+		<param name="Threshold" value="DEBUG"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MMdd HH:mm:ss\} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="RESULT" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="debug" />
+		<param name="File" value="log/result.log" />
+		<param name="MaxBackupIndex" value="21"/>
+		<param name="MaxFileSize" value="81920KB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"	value="%d{MMdd HH:mm:ss,SSS\} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="HTTPCLIENT" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="debug" />
+		<param name="File" value="log/httpclient.log" />
+		<param name="MaxBackupIndex" value="21"/>
+		<param name="MaxFileSize" value="81920KB"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"	value="%d{MMdd HH:mm:ss,SSS\} %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 记录所有提交内容  -->
+	<!--
+	<category name="ray.mongoose.tools.ResultLog" additivity="false">  
+    	<level value="DEBUG" />  
+    	<appender-ref ref="RESULT" />
+    	<appender-ref ref="CONSOLE" />
+	</category>
+	
+	<category name="org.apache.http" additivity="false">  
+    	<level value="DEBUG" />  
+    	<appender-ref ref="HTTPCLIENT" />
+    	<appender-ref ref="CONSOLE" />
+	</category>
+	-->
+	<root>
+		<level value ="debug"/>
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ROLLING" /> 
+	</root>
+	
+</log4j:configuration>

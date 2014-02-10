@@ -1,0 +1,13 @@
+<project name="leopard" default="run" basedir=".">
+    <property file="file.properties"/> 
+        
+    <target name="run"> 
+    	<echo>Server Start ...</echo>
+        <ant antfile="${leopard-server}" dir="server" output="ant.log" target="dist"/>  
+    	<echo>Server Finished !</echo>
+    	
+    	<echo>Cilent Start ...</echo>
+        <ant antfile="${leopard-client}" dir="client" output="ant.log" target="dist"/> 
+    	<echo>Cilent Finished !</echo>
+    </target> 
+</project>

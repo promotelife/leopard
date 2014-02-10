@@ -1,0 +1,93 @@
+<project name="leopard" default="run" basedir=".">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+
+  <property name="MyProject" value="leopard"/>
+  <property name="src" location="src"/>
+  <property name="build" location="build"/> 
+  <property name="dist" location="distrib"/> 
+  <property name="jclasspath"  location="libs"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}" includeAntRuntime="false">
+    
+      <classpath id="cpath">
+        <fileset dir="${jclasspath}"    includes="*.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <mkdir dir="${dist}"/>
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/${MyProject}.jar" basedir="${build}">
+
+    </jar>
+  </target>
+
+  <target name="dist-release" depends="compile"
+        description="generate the distribution" >
+    <mkdir dir="${dist}"/>
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/${MyProject}-${release.version}.jar" basedir="${build}">
+
+    </jar>
+  </target>
+  
+  <target name="run" depends="dist" >
+     <java classname="com.genius.server.Start" fork="true">
+        <arg value="-h"/>
+        <jvmarg value="-ea"/>
+        <jvmarg value="-server"/>
+        <jvmarg value="-Dlog4j.configuration=file:conf/log4j.xml"/> 
+          <classpath> 
+            <fileset dir="${dist}"> 
+              <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${jclasspath}"> 
+              <include name="*.jar"/>
+            </fileset>
+            </classpath>
+       </java>
+  </target>
+
+
+  <target name="run-only">
+     <java classname="com.genius.server.Start" fork="true">
+        <arg value="-h"/>
+        <jvmarg value="-ea"/>
+        <jvmarg value="-server"/>
+        <jvmarg value="-Dlog4j.configuration=file:conf/log4j.xml"/> 
+          <classpath> 
+            <fileset dir="${dist}"> 
+              <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${jclasspath}"> 
+              <include name="*.jar"/>
+            </fileset>
+            </classpath>
+       </java>
+  </target>
+
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+  </target>
+  <target name="publish" depends="run,clean">
+    <echo>Finished !</echo>
+  </target>
+</project>
