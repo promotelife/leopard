@@ -5,8 +5,7 @@ log
 Test.java
 TestClass.java
  
-.classpath
-.project
+
 
 # Compiled Object files
 *.class
