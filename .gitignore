@@ -1,11 +1,11 @@
  
 build 
 distrib
-log  
-Test.java
-TestClass.java
- 
+log
+bin
 
+server/libs/*.jar
+client/libs/*.jar
 
 # Compiled Object files
 *.class

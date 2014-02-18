@@ -11,8 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class Server {  
-    private static final int BUFSIZE=32;  
+public class Server {   
     private int port=8088;
     
     public Server(int _port)
@@ -32,26 +31,8 @@ public class Server {
         	//调用ServerSocket的accept()方法以获取客户端连接。  
             //基于新建立的客户端连接，创建一个Socket实例，并由accept()方法返回  
             Socket cltSock=svrSock.accept();  
-            SocketAddress clientAddress=cltSock.getRemoteSocketAddress();  
-            System.out.println("Handling client at "+clientAddress);  
-              
-          //使用所返回的Socket实例的InputStream和OutputStream与客户端进行通信  
-            BufferedReader br=new BufferedReader(new InputStreamReader(cltSock.getInputStream()));
-            BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(cltSock.getOutputStream()));
-            
-            String readStr=null; 
-            while((readStr=br.readLine())!=null){
-                System.out.println("收到报文:"+readStr);
-                bw.write(readStr);
-                bw.newLine();
-                bw.flush();
-            }
-            
-            if(bw!=null) bw.close();
-            if(br!=null) br.close();
-          
-          //关闭该客户端套接字链接  
-            cltSock.close();  
+            svrThread tclnt = new svrThread(cltSock);
+            tclnt.start();
         }  
     }  
 }  

@@ -49,58 +49,14 @@ public class Client {
         BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(cltSock.getOutputStream()));
          
         //定义读取键盘的流对象
-	   //BufferedReader brk=new BufferedReader( new InputStreamReader(System.in));
-       //定义读取文本的流对象
-//	   BufferedReader brk=new BufferedReader( new FileReader("d:/a.txt"));
-	   BufferedReader brk=new BufferedReader( new InputStreamReader( new FileInputStream(new File("d:/a.txt"))));
+	   BufferedReader brk=new BufferedReader( new InputStreamReader(System.in));
+       //定义读取文本的流对象 
+        //BufferedReader brk=new BufferedReader( new InputStreamReader( new FileInputStream(new File("d:/a.txt"))));
 	    
        String strInput=null; 
        String strBack=null; 
-//	   while((strInput=brk.readLine())!=null)
-//	   {
-//	        bw.write(strInput);
-//	        bw.newLine();
-//	        bw.flush(); 
-//	        
-//	        
-//	        if((strBack=br.readLine())!=null){
-//	            System.out.println("已发送报文:"+strBack); 
-//	        } 
-//		   
-//	   } 
-       boolean flag = true;
-       boolean flag2 = true;
-       String preMessage=null;
-       while(flag)
+	   while((strInput=brk.readLine())!=null)
 	   {
-    	   try{
-    		   strInput=brk.readLine();
-    	   }catch(Exception e)
-    	   { } 
-    	   
-    	   if(flag2)
-    	   {
-    		   if(strInput!=null)
-    		   {
-    			   preMessage=strInput;
-    		   }
-    		   if(strInput==null)
-    		   {
-    			   strInput=preMessage;
-    			   flag2=false;
-    		   }
-    		   else
-    		   {
-    			   continue;
-    		   }
-    	   } 
-    	   
-    	   if(strInput!=null)
-    	   {
-    		   if (strInput.equals("exit"))
-    		   {
-    			   flag=false;
-    		   }
 	        bw.write(strInput);
 	        bw.newLine();
 	        bw.flush(); 
@@ -109,7 +65,12 @@ public class Client {
 	        if((strBack=br.readLine())!=null){
 	            System.out.println("已发送报文:"+strBack); 
 	        } 
-    	   }
+	        
+
+ 		   if (strInput.trim().equals("exit"))
+ 		   {
+ 			   break;
+ 		   }
 		   
 	   } 
 
