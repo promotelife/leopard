@@ -10,4 +10,17 @@
         <ant antfile="${leopard-client}" dir="client" output="ant.log" target="dist"/> 
     	<echo>Cilent Finished !</echo>
     </target> 
+
+
+    <target name="clean"> 
+        <echo>Server Start ...</echo>
+        <ant antfile="${leopard-server}" dir="server" output="ant.log" target="clean"/>  
+        <echo>Server Finished !</echo>
+        
+        <echo>Cilent Start ...</echo>
+        <ant antfile="${leopard-client}" dir="client" output="ant.log" target="clean"/> 
+        <echo>Cilent Finished !</echo> 
+        <!-- delete bin files-->
+        <delete dir="bin"/> 
+  </target> 
 </project>
